@@ -10,14 +10,22 @@ const port = process.env.PORT || 3000;
 app.use(async (req, res, next) => {
   try {
     const webhookUrl = process.env.WHATSAPP_WEBHOOK_URL;
+    const url = webhookUrl + req.url;
     const method = req.method.toLowerCase();
-    const url = req.url;
-    const response = await axios[method](`${webhookUrl}${url}`, {
-      ...req.body,
-    });
+    const body = req.body;
+    const headers = { ...req.headers };
+    delete headers["content-length"];
+
+    const config = {
+      method,
+      url,
+      data: body,
+      headers,
+    };
+    const response = await axios(config);
     return res.send(response.data);
   } catch (err) {
-    return res.send({
+    return res.status(500).send({
       error: err.message,
     });
   }
