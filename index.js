@@ -25,7 +25,7 @@ app.use(async (req, res, next) => {
       },
     };
     const response = await axios(config);
-    return res.send(response.data);
+    return res.status(200).send(JSON.stringify(response.data));
   } catch (err) {
     return res.status(500).send({
       error: err.message,
