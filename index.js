@@ -11,8 +11,8 @@ app.use(async (req, res, next) => {
   try {
     const webhookUrl = process.env.WHATSAPP_WEBHOOK_URL;
     const method = req.method.toLowerCase();
-    const path = req.path;
-    const response = await axios[method](`${webhookUrl}${path}`, {
+    const url = req.url;
+    const response = await axios[method](`${webhookUrl}${url}`, {
       ...req.body,
     });
     return res.send(response.data);
