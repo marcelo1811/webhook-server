@@ -14,13 +14,15 @@ app.use(async (req, res, next) => {
     const method = req.method.toLowerCase();
     const body = req.body;
     const headers = { ...req.headers };
-    delete headers["content-length"];
+    // delete headers["content-length"];
 
     const config = {
       method,
       url,
       data: body,
-      headers,
+      headers: {
+        "content-type": headers["content-type"],
+      },
     };
     const response = await axios(config);
     return res.send(response.data);
