@@ -7,6 +7,10 @@ const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 app.post("/webhook/whatsapp", async (req, res) => {
   try {
     const webhookUrl = process.env.WHATSAPP_WEBHOOK_URL;
