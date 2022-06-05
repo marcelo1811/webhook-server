@@ -7,14 +7,12 @@ const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.post("/webhook/whatsapp", async (req, res) => {
+app.use(async (req, res, next) => {
   try {
     const webhookUrl = process.env.WHATSAPP_WEBHOOK_URL;
-    const response = await axios.post(`${webhookUrl}/messages/send`, {
+    const method = req.method.toLowerCase();
+    const path = req.path;
+    const response = await axios[method](`${webhookUrl}${path}`, {
       ...req.body,
     });
     return res.send(response.data);
